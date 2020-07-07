@@ -1,0 +1,58 @@
+<div class="container">
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @event.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @event.description %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @event.date %>
+</p>
+
+<p>
+  <strong>Display date:</strong>
+  <%= @event.display_date %>
+</p>
+
+<p>
+  <strong>Citation text:</strong>
+  <%= @event.citation_text %>
+</p>
+
+<p>
+  <strong>Citation link:</strong>
+  <%= @event.citation_link %>
+</p>
+
+<p>
+  <strong>Citation page:</strong>
+  <%= @event.citation_page %>
+</p>
+
+<p>
+  <strong>Citation description:</strong>
+  <%= @event.citation_description %>
+</p>
+
+<p>
+  <strong>Content link:</strong>
+  <%= @event.content_link %>
+</p>
+
+<p>
+  <strong>Thumb:</strong>
+  <%= @event.thumb %>
+</p>
+
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>
+
+</div>

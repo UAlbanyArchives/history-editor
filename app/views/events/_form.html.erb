@@ -1,0 +1,61 @@
+<%= bootstrap_form_with(model: event, local: true) do |form| %>
+  <% if event.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:</h2>
+
+      <ul>
+      <% event.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= form.text_area :description %>
+  </div>
+
+  <div class="field">
+    <%= form.date_select :date %>
+    <%= form.text_field :date, value: @event.date.strftime("%Y-%m-%d") %>
+    <small class="form-text text-muted">This is the sort date or how it will be ordered chronologically.</small>
+  </div>
+
+  <div class="field">
+    <%= form.text_field :display_date %>
+    <small class="form-text text-muted">This is the date that the user will see. If blank, the regular date will be shown.</small>
+  </div>
+
+  <div class="field">
+    <%= form.text_field :citation_text %>
+    <small class="form-text text-muted">This is the link text that will be displayed.</small>
+  </div>
+
+  <div class="field">
+    <%= form.text_field :citation_link %>
+    <small class="form-text text-muted">This is a link to a Hyrax object that provides evidence for the event.</small>
+  </div>
+
+  <div class="field">
+    <%= form.text_field :citation_page %>
+    <small class="form-text text-muted">Optional page number for PDF objects.</small>
+  </div>
+
+  <div class="field">
+    <%= form.text_area :citation_description %>
+    <small class="form-text text-muted">Optional context for the citation.</small>
+  </div>
+
+  <div class="field">
+    <%= form.text_field :content_link %>
+    <small class="form-text text-muted">This is a photo or other Hyrax object that might describe the event, but does not contain evidence of it.</small>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
