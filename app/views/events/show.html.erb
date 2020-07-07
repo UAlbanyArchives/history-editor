@@ -1,6 +1,10 @@
 <div class="container">
 
-<p id="notice"><%= notice %></p>
+<% if notice %>
+  <div id="notice">
+    <p class="alert alert-success" role="alert"><%= notice %></p>
+  </div>
+<% end %>
 
 <p>
   <strong>Title:</strong>
