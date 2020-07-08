@@ -6,12 +6,32 @@
   </div>
 <% end %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @subject.name %>
-</p>
+<div class="card" style="width: 18rem;">
+  <% if @subject.file %>
+    <img src="<%= @subject.file + "?file=thumbnail" %>" class="card-img-top" />
+  <% end %>
+  <div class="card-body">
+    <h3 class="card-title"><%= @subject.name %></h3>
+  </div>
+</div>
 
-<%= link_to 'Edit', edit_subject_path(@subject) %> |
-<%= link_to 'Back', subjects_path %>
+<div class="btn-group mt-3">
+  <%= link_to 'Edit', edit_subject_path(@subject), class: "btn btn-info" %>
+  <%= link_to 'Back', subjects_path, class: "btn btn-outline-dark" %>
+</div>
+
+
+<div class="list-group mt-3">
+  <h4>Events:</h4>
+	<% Event.includes(:subjects).where(subjects: {id: @subject.id }).order(:date).each do |event| %>
+		<a href="/events/<%= event.id %>" class="list-group-item list-group-item-action flex-column align-items-start">
+		    <div class="d-flex w-100 justify-content-between">
+		      <h5 class="mb-1"><%= event.title %></h5>
+		      <small><%= event.date %></small>
+		    </div>
+		    <p class="mb-1"><%= event.description %></p>
+		  </a>
+	<% end %>
+</div>
 
 </div>

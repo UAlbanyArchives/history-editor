@@ -11,6 +11,7 @@
 <table class="table table-hover table-sm">
   <thead>
     <tr>
+      <th>Thumb</th>
       <th>Date</th>
       <th>Display date</th>
       <th>Title</th>
@@ -18,14 +19,18 @@
       <th>Citation link</th>
       <th>Citation page</th>
       <th>Citation description</th>
-      <th>Content link</th>
-      <th colspan="3"></th>
+      <th></th>
     </tr>
   </thead>
 
   <tbody>
     <% @events.order(:date).each do |event| %>
       <tr>
+        <td>
+          <% if event.file %>
+            <img src="<%= event.file + "?file=thumbnail" %>" class="img-thumbnail" />
+          <% end %>
+        </td>
         <td><%= event.date %></td>
         <td><%= event.display_date %></td>
         <td><%= event.title %></td>
@@ -33,11 +38,13 @@
         <td><a href="<%= event.citation_link %>"><%= event.citation_text %></a></td>
         <td><%= event.citation_page %></td>
         <td><%= event.citation_description %></td>
-        <td><%= event.content_link %></td>
-        <td><%= link_to 'Show', event, class: "btn btn-primary" %></td>
-        <td><%= link_to 'Edit', edit_event_path(event), class: "btn btn-info" %></td>
-        <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></td>
-      </tr>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Show', event, class: "btn btn-primary" %>
+            <%= link_to 'Edit', edit_event_path(event), class: "btn btn-info" %>
+            <%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+          </div>
+        </td>
     <% end %>
   </tbody>
 </table>

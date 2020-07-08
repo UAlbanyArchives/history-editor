@@ -6,57 +6,89 @@
   </div>
 <% end %>
 
-<p>
-  <strong>Title:</strong>
-  <%= @event.title %>
-</p>
+  <div class="row">
 
-<p>
-  <strong>Description:</strong>
-  <%= @event.description %>
-</p>
+    <div class="col-8">
 
-<p>
-  <strong>Date:</strong>
-  <%= @event.date %>
-</p>
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex w-100 justify-content-between">
+            <h4 class="card-title"><%= @event.title %></h4>
+            <small>
+              <% if @event.display_date.present? %>
+                <%= @event.display_date %>
+              <% else %>
+                <%= @event.date.strftime("%Y %B %d") %>
+              <% end %>  
+            </small>
+          </div>
+          
+          <p class="card-text"><%= @event.description %></p>
+        </div>
 
-<p>
-  <strong>Display date:</strong>
-  <%= @event.display_date %>
-</p>
+        <div class="col-12">
+          <ul class="list-group">
+            <% @event.subjects.each do |subject| %>
+              <a href="/subjects/<%= subject.id %>" class="list-group-item list-group-item-action list-group-item-info"><%= subject.name %></a>
+            <% end %>
+          </ul>
+        </div>
 
-<p>
-  <strong>Citation text:</strong>
-  <%= @event.citation_text %>
-</p>
+        <div class="col-12">
+          
 
-<p>
-  <strong>Citation link:</strong>
-  <%= @event.citation_link %>
-</p>
+          <p>
+            <strong>Citation page:</strong>
+            <%= @event.citation_page %>
+          </p>
 
-<p>
-  <strong>Citation page:</strong>
-  <%= @event.citation_page %>
-</p>
+          <p>
+            <strong>Citation description:</strong>
+            <%= @event.citation_description %>
+          </p>
 
-<p>
-  <strong>Citation description:</strong>
-  <%= @event.citation_description %>
-</p>
+        </div>
+          <p>
+            <a href="<%= @event.citation_link %>"><%= @event.citation_text %></a>
+          </p>
+        <img class="card-img-top" style="width:500px;margin:auto;" src="<%= @event.file %>">
+        
+      </div>
 
-<p>
-  <strong>Content link:</strong>
-  <%= @event.content_link %>
-</p>
+    </div>
 
-<p>
-  <strong>Thumb:</strong>
-  <%= @event.thumb %>
-</p>
+    <div class="col-4">
 
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
+        <div class="card">
+          <div class="card-body">
+            
+            
+            <% if @event.internal_note.present? %>
+              <h4 class="card-title">Internal note</h4>
+              <p class="card-text"><%= @event.internal_note %></p>
+            <% end %>
+
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <%= render 'layouts/boolean_check', check: @event.formatted_correctly %>
+                <strong>Formatted correctly</strong>
+              </li>
+              <li class="list-group-item">
+                <%= render 'layouts/boolean_check', check: @event.content_confirmed %>
+                <strong>Content confirmed</strong>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+
+        <div class="btn-group mt-3">
+        <%= link_to 'Edit', edit_event_path(@event), class: "btn btn-info" %>
+        <%= link_to 'Back', events_path, class: "btn btn-outline-dark" %>
+      </div>
+
+    </div>
+
+  </div>
 
 </div>

@@ -1,6 +1,22 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
+  def clean_clickref
+
+    if self.url
+      require 'addressable/uri'
+
+      uri = Addressable::URI.parse(self.url)
+      params = uri.query_values
+
+      if params
+        uri.query_values = params.except('clickref')
+        self.url = uri.to_s
+      end
+
+    end
+  end
+
   # GET /events
   # GET /events.json
   def index
@@ -24,6 +40,8 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
+    strip_params
+    get_file
     @event = Event.new(event_params)
 
     respond_to do |format|
@@ -40,6 +58,9 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
+    strip_params
+    get_file
+
     respond_to do |format|
       if @event.update(event_params)
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
@@ -67,8 +88,41 @@ class EventsController < ApplicationController
       @event = Event.find(params[:id])
     end
 
+    def strip_params
+      params[:event][:citation_link] = params[:event][:citation_link].split('?')[0]
+      params[:event][:representative_media] = params[:event][:representative_media].split('?')[0]
+    end
+
+    def get_file
+      require 'net/http'
+      require 'json'
+      if params[:event][:citation_link]
+        url = URI.parse(params[:event][:citation_link] + "?format=jsonld")
+      elsif params[:event][:representative_media]
+        url = URI.parse(params[:event][:representative_media] + "?format=jsonld")
+      end
+      if url
+        http = Net::HTTP.new(url.host, url.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+        request = Net::HTTP::Get.new(url.request_uri)
+
+        response = http.request(request)
+        result = JSON.parse(response.body)
+        fileSetID = []
+        result["@graph"].each do |thing|
+          if thing.key?("ore:proxyFor")
+            fileSetID << thing["ore:proxyFor"]["@id"].split("archives.albany.edu/catalog/")[1]
+          end
+        end
+        fileURL = "https://archives.albany.edu/downloads/" + fileSetID[0]
+        params[:event][:file] = fileURL
+      end
+    end
+
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:title, :description, :date, :display_date, :citation_text, :citation_link, :citation_page, :citation_description, :content_link, :thumb)
+      params.require(:event).permit(:title, :description, :date, :display_date, :citation_text, :citation_link, :citation_page, :citation_description, :representative_media, :file, :internal_note, :formatted_correctly, :content_confirmed, :subject_ids => [])
     end
 end

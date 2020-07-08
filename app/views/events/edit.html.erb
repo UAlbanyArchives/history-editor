@@ -4,7 +4,9 @@
 
 <%= render 'form', event: @event %>
 
-<%= link_to 'Show', @event %> |
-<%= link_to 'Back', events_path %>
+<div class="btn-group">
+	<%= link_to 'Show', @event, class: "btn btn-primary" %>
+	<%= link_to 'Back', events_path, class: "btn btn-outline-dark" %>
+</div>
 
 </div>

@@ -10,55 +10,85 @@
       </ul>
     </div>
   <% end %>
+  <div class="row">
 
-  <div class="field">
-    <%= form.text_field :title %>
-  </div>
+    <div class="col-8">
 
-  <div class="field">
-    <%= form.text_area :description %>
-  </div>
+      <div class="field">
+        <%= form.text_field :title %>
+      </div>
 
-  <div class="field">
-    <% if @event.date.present? %>
-      <%= form.text_field :date, value: @event.date.strftime("%Y-%m-%d") %>
-    <% else %>
-      <%= form.text_field :date, placeholder: "YYYY-MM-DD" %>
-    <% end %>
-    <small class="form-text text-muted">This is the sort date or how it will be ordered chronologically.</small>
-  </div>
+      <div class="field">
+        <%= form.text_area :description %>
+      </div>
 
-  <div class="field">
-    <%= form.text_field :display_date %>
-    <small class="form-text text-muted">This is the date that the user will see. If blank, the regular date will be shown.</small>
-  </div>
+      <div class="field">
+        <% if @event.date.present? %>
+          <%= form.text_field :date, value: @event.date.strftime("%Y-%m-%d") %>
+        <% else %>
+          <%= form.text_field :date, placeholder: "YYYY-MM-DD" %>
+        <% end %>
+        <small class="form-text text-muted">This is the sort date or how it will be ordered chronologically.</small>
+      </div>
 
-  <div class="field">
-    <%= form.text_field :citation_link %>
-    <small class="form-text text-muted">This is a link to a Hyrax object that provides evidence for the event.</small>
-  </div>
+      <div class="field">
+        <%= form.text_field :display_date %>
+        <small class="form-text text-muted">This is the date that the user will see. If blank, the regular date will be shown.</small>
+      </div>
 
-  <div class="field">
-    <%= form.text_field :citation_text %>
-    <small class="form-text text-muted">This is the link text that will be displayed.</small>
-  </div>
+      <div class="field">
+        <%= form.select(:subject_ids, Subject.all.collect {|s| [s.name, s.id]}, {}, {multiple: true}) %>
+      </div>
 
-  <div class="field">
-    <%= form.text_field :citation_page %>
-    <small class="form-text text-muted">Optional page number for PDF objects. The PDF will be opened to this page.</small>
-  </div>
+      <div class="field">
+        <%= form.text_field :citation_link %>
+        <small class="form-text text-muted">This is a link to a Hyrax object that provides evidence for the event.</small>
+      </div>
 
-  <div class="field">
-    <%= form.text_area :citation_description %>
-    <small class="form-text text-muted">Optional context for the citation, for describing the relationship with the citation.</small>
-  </div>
+      <div class="field">
+        <%= form.text_field :citation_text %>
+        <small class="form-text text-muted">This is the link text that will be displayed.</small>
+      </div>
 
-  <div class="field">
-    <%= form.text_field :content_link %>
-    <small class="form-text text-muted">This is a photo or other Hyrax object that might describe the event, but does not contain evidence of it.</small>
-  </div>
+      <div class="field">
+        <%= form.text_field :citation_page %>
+        <small class="form-text text-muted">Optional page number for PDF objects. The PDF will be opened to this page.</small>
+      </div>
 
-  <div class="actions">
-    <%= form.submit %>
+      <div class="field">
+        <%= form.text_area :citation_description %>
+        <small class="form-text text-muted">Optional context for the citation, for describing the relationship with the citation.</small>
+      </div>
+
+      <div class="field">
+        <%= form.text_field :representative_media %>
+        <small class="form-text text-muted">This is a photo or other Hyrax object that might describe the event, but does not contain evidence of it.</small>
+      </div>
+
+      <div class="actions">
+        <%= form.submit %>
+      </div>
+
+      </div>
+
+    <div class="col-4">
+      <h3>Internal Info</h3>
+
+      <div class="field">
+        <div class="form-check">
+          <%= form.check_box :formatted_correctly %>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="form-check">
+          <%= form.check_box :content_confirmed %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= form.text_area :internal_note %>
+      </div>
+    </div>
   </div>
 <% end %>
