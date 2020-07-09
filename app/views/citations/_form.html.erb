@@ -1,0 +1,32 @@
+<%= bootstrap_form_with(model: citation, local: true) do |form| %>
+  <% if citation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(citation.errors.count, "error") %> prohibited this citation from being saved:</h2>
+
+      <ul>
+      <% citation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.text_field :link %>
+    <small class="form-text text-muted">This is a link to a Hyrax object that provides evidence for the event.</small>
+  </div>
+
+  <div class="field">
+    <%= form.text_field :text %>
+    <small class="form-text text-muted">Display text for the citation link</small>
+  </div>
+
+  <div class="field">
+    <%= form.text_field :page %>
+    <small class="form-text text-muted">Page number that a PDF will be opened to.</small>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

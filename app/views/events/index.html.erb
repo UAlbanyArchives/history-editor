@@ -16,9 +16,8 @@
       <th>Display date</th>
       <th>Title</th>
       <th>Description</th>
-      <th>Citation link</th>
-      <th>Citation page</th>
-      <th>Citation description</th>
+      <th>Subjects</th>
+      <th>Citations</th>
       <th></th>
     </tr>
   </thead>
@@ -35,9 +34,8 @@
         <td><%= event.display_date %></td>
         <td><%= event.title %></td>
         <td><%= event.description %></td>
-        <td><a href="<%= event.citation_link %>"><%= event.citation_text %></a></td>
-        <td><%= event.citation_page %></td>
-        <td><%= event.citation_description %></td>
+        <td><%= render 'layouts/boolean_check', check: event.subjects.present? %></td>
+        <td><%= render 'layouts/boolean_check', check: event.citations.present? %></td>
         <td>
           <div class="btn-group">
             <%= link_to 'Show', event, class: "btn btn-primary" %>

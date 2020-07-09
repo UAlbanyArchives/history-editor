@@ -64,6 +64,7 @@ gem 'jquery-rails'
 gem "bootstrap_form", "~> 4.5"
 gem "font-awesome-rails"
 gem "rsolr"
+gem "cocoon"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

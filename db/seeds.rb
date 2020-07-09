@@ -17,6 +17,8 @@ Subject.create(name: "Grants")
 Subject.create(name: "Service Units")
 Subject.create(name: "Student Life")
 Subject.create(name: "Students")
+Subject.create(name: "Presidents")
+Subject.create(name: "University Names")
 
 require 'csv'
 

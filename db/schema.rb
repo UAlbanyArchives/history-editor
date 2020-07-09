@@ -10,16 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_08_182538) do
+ActiveRecord::Schema.define(version: 2020_07_09_153747) do
+
+  create_table "citations", force: :cascade do |t|
+    t.string "text"
+    t.string "link"
+    t.string "file"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "page"
+    t.integer "event_id"
+    t.index ["event_id"], name: "index_citations_on_event_id"
+  end
 
   create_table "events", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.date "date"
     t.string "display_date"
-    t.string "citation_text"
-    t.string "citation_link"
-    t.integer "citation_page"
     t.text "citation_description"
     t.string "representative_media"
     t.string "file"

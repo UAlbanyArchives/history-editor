@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Text:</strong>
+  <%= @citation.text %>
+</p>
+
+<p>
+  <strong>Link:</strong>
+  <%= @citation.link %>
+</p>
+
+<p>
+  <strong>Page:</strong>
+  <%= @citation.Page %>
+</p>
+
+<p>
+  <strong>File:</strong>
+  <%= @citation.file %>
+</p>
+
+<%= link_to 'Edit', edit_citation_path(@citation) %> |
+<%= link_to 'Back', citations_path %>

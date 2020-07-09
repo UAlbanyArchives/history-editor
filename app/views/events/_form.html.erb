@@ -19,7 +19,7 @@
       </div>
 
       <div class="field">
-        <%= form.text_area :description %>
+        <%= form.text_area :description, rows: "10" %>
       </div>
 
       <div class="field">
@@ -37,27 +37,29 @@
       </div>
 
       <div class="field">
-        <%= form.select(:subject_ids, Subject.all.collect {|s| [s.name, s.id]}, {}, {multiple: true}) %>
+        <%= form.select(:subject_ids, Subject.all.collect {|s| [s.name, s.id]}, {}, {multiple: true, size: 10}) %>
       </div>
 
-      <div class="field">
-        <%= form.text_field :citation_link %>
-        <small class="form-text text-muted">This is a link to a Hyrax object that provides evidence for the event.</small>
-      </div>
-
-      <div class="field">
-        <%= form.text_field :citation_text %>
-        <small class="form-text text-muted">This is the link text that will be displayed.</small>
-      </div>
-
-      <div class="field">
-        <%= form.text_field :citation_page %>
-        <small class="form-text text-muted">Optional page number for PDF objects. The PDF will be opened to this page.</small>
+      <div class="field mt-4 mb-4">
+        <div class="card">
+          <div class="card-header">
+            Citations
+          </div>
+          <%= form.fields_for :citations do |citation| %>
+            <%= render "citation_fields", f: citation %>
+          <% end %>
+          <div class="card-footer">
+              <%= link_to_add_association form, :citations, class: "btn btn-primary" do %>
+                <%= fa_icon "plus-circle" %>
+                Add Citation
+              <% end %>
+            </div>
+        </div>
       </div>
 
       <div class="field">
         <%= form.text_area :citation_description %>
-        <small class="form-text text-muted">Optional context for the citation, for describing the relationship with the citation.</small>
+        <small class="form-text text-muted">Unstructured legacy citation, or for describing the relationship with the citation(s).</small>
       </div>
 
       <div class="field">
