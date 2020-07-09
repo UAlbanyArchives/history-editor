@@ -6,8 +6,8 @@ class Event < ApplicationRecord
 	after_commit :index_data_in_solr, on: [:create, :update]
 	before_destroy :remove_data_from_solr
 
-	validates :title, :description, :date, presence: true
-	validates :title, uniqueness: { case_sensitive: false }
+	#validates :title, :description, :date, presence: true
+	#validates :title, uniqueness: { case_sensitive: false }
 
 	validates :citation_link, presence: true, if: -> { citation_page.present? }
 	validates :citation_link, presence: true, if: -> { citation_text.present? }
