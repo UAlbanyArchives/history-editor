@@ -1,7 +1,5 @@
 <div class="container-fluid">
 
-<p id="notice"><%= notice %></p>
-
 <h1>Events</h1>
 
 <div class="mt-2 mb-3">
@@ -23,7 +21,8 @@
   </thead>
 
   <tbody>
-    <% @events.order(:date).each do |event| %>
+    <% @events = @events.order(:date).paginate(page: params[:page]) %>
+    <% @events.each do |event| %>
       <tr>
         <td>
           <% if event.file %>
@@ -46,5 +45,7 @@
     <% end %>
   </tbody>
 </table>
+
+<%= will_paginate @events %>
 
 </div>

@@ -13,7 +13,7 @@
       </li>      
       <li class="nav-item">
         <a class="nav-link" href="/events/new" role="button" aria-haspopup="true" aria-expanded="false">
-          Add Event
+          New Event
         </a>
       </li>
       <li class="nav-item">
@@ -26,5 +26,19 @@
           Add Subject
         </a>
       </li>
+    </ul>
+    <div class="navbar-text float-right">
+      <% if user_signed_in? %>
+        <span>Logged in as <strong><%= current_user.email %></strong>.</span>
+        <div class="btn-group">
+        <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'btn btn-secondary'  %>
+        </div>
+      <% else %>
+        <div class="btn-group">
+        <%= link_to "Sign up", new_user_registration_path, :class => 'btn btn-secondary'  %>
+        <%= link_to "Login", new_user_session_path, :class => 'btn btn-secondary'  %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </nav>
