@@ -26,6 +26,7 @@ class SubjectsController < ApplicationController
   def create
     strip_params
     get_file
+    media_to_yml
     @subject = Subject.new(subject_params)
 
     respond_to do |format|
@@ -44,6 +45,7 @@ class SubjectsController < ApplicationController
   def update
     strip_params
     get_file
+    media_to_yml
     
     respond_to do |format|
       if @subject.update(subject_params)
@@ -101,6 +103,20 @@ class SubjectsController < ApplicationController
         end
     end
 
+    def media_to_yml
+      if params[:subject][:file].present?
+        require 'yaml'
+        yml_path = "#{Rails.root}/../history/config/subjects.yml"
+        if File.exists? (yml_path)
+          media_yml = YAML.load_file(yml_path)
+          media_yml[params[:subject][:name]] = params[:subject][:file]
+        else
+          media_yml = {}
+          media_yml[params[:subject][:name]] = params[:subject][:file]
+        end
+        File.open(yml_path, 'w') { |f| YAML.dump(media_yml, f) }
+      end
+    end
 
     # Only allow a list of trusted parameters through.
     def subject_params

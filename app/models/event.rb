@@ -34,11 +34,19 @@ class Event < ApplicationRecord
 			solr_citation_pages << cite.page
 			solr_citation_files << cite.file
 		end
-	    {
-	      "title" => title, "description" => description, "date" => date.strftime("%Y-%m-%d"),"date_formatted" => date.strftime("%Y %B%e"), "display_date" => display_date,
-	      "subjects" => solr_subjects, "citation_description" => citation_description, "citation_links" => solr_citation_links, "citation_text" => solr_citation_text, "citation_pages" => solr_citation_pages, "citation_files" => solr_citation_files,
-	      "representative_media" => representative_media, "file" => file, "id" => id
-	    }
+		if display_date.present?
+	    	{
+	      	"title" => title, "description" => description, "date" => date.strftime("%Y-%m-%d"),"date_formatted" => date.strftime("%Y %B%e"), "display_date" => display_date,
+	      	"subjects" => solr_subjects, "citation_description" => citation_description, "citation_links" => solr_citation_links, "citation_text" => solr_citation_text, "citation_pages" => solr_citation_pages, "citation_files" => solr_citation_files,
+	     	 "representative_media" => representative_media, "file" => file, "id" => id
+	    	}
+		else
+			{
+	      	"title" => title, "description" => description, "date" => date.strftime("%Y-%m-%d"),"date_formatted" => date.strftime("%Y %B%e"), "display_date" => date.strftime("%Y %B%e"),
+	      	"subjects" => solr_subjects, "citation_description" => citation_description, "citation_links" => solr_citation_links, "citation_text" => solr_citation_text, "citation_pages" => solr_citation_pages, "citation_files" => solr_citation_files,
+	      	"representative_media" => representative_media, "file" => file, "id" => id
+	    	}
+		end
 	  end
 
 	  def index_data_in_solr

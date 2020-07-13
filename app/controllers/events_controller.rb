@@ -108,13 +108,20 @@ class EventsController < ApplicationController
           response = http.request(request)
           result = JSON.parse(response.body)
           fileSetID = []
+          label = ""
           result["@graph"].each do |thing|
             if thing.key?("ore:proxyFor")
               fileSetID << thing["ore:proxyFor"]["@id"].split("archives.albany.edu/catalog/")[1]
             end
+            if thing.key?("dc:title") and label == ""
+              label = thing["dc:title"]
+            end
           end
           fileURL = "https://archives.albany.edu/downloads/" + fileSetID[0]
           cite[1][:file] = fileURL
+          unless cite[1][:text].present? or label == ""
+            cite[1][:text] = label
+          end
         end
       end
     end
