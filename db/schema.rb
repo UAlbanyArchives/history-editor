@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_11_220310) do
+ActiveRecord::Schema.define(version: 2020_07_13_212532) do
 
   create_table "citations", force: :cascade do |t|
     t.string "text"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2020_07_11_220310) do
     t.text "internal_note"
     t.boolean "content_confirmed"
     t.boolean "formatted_correctly"
+    t.boolean "iiif"
   end
 
   create_table "events_subjects", id: false, force: :cascade do |t|

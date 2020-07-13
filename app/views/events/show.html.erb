@@ -2,9 +2,14 @@
 
   <div class="row">
 
-    <div class="col-8">
+    <div class="col-xs-12 col-md-8">
 
       <div class="card">
+        <% if @event.iiif %>
+            <div class="uv" data-locale="en-GB:English (GB),cy-GB:Cymraeg" data-config="" data-uri="<%= @event.representative_media %>/manifest" data-collectionindex="0" data-manifestindex="0" data-sequenceindex="0" data-canvasindex="0" data-rotation="0" style="width:100%; height: 500px; background-color: #000"></div><script type="text/javascript" id="embedUV" src="https://archives.albany.edu/universalviewer/dist/uv-2.0.1/lib/embed.js"></script><script type="text/javascript">/* wordpress fix */</script>
+        <% else %>
+            <iframe id="pdfViewer" src=<%= @event.file %> class="embededPDF"></iframe>
+        <% end %>
         <div class="card-body">
           <div class="d-flex w-100 justify-content-between">
             <h4 class="card-title"><%= @event.title %></h4>
@@ -17,13 +22,14 @@
             </small>
           </div>
           
+                    
           <p class="card-text"><%= @event.description %></p>
         </div>
 
         <div class="col-12">
           <ul class="list-group mb-3">
             <% @event.subjects.each do |subject| %>
-              <a href="/subjects/<%= subject.id %>" class="list-group-item list-group-item-action list-group-item-info"><%= subject.name %></a>
+              <a href="<%= subjects_path %>/<%= subject.id %>" class="list-group-item list-group-item-action list-group-item-info"><%= subject.name %></a>
             <% end %>
           </ul>
         </div>
@@ -53,14 +59,12 @@
         <div class="card-body">
           <p class="card-text"><%= @event.citation_description %></p>
         </div>
-
-        <img class="card-img-top" style="width:500px;margin:auto;" src="<%= @event.file %>">
         
       </div>
 
     </div>
 
-    <div class="col-4">
+    <div class="col-xs-12 col-md-4">
 
         <div class="card">
           <div class="card-body">

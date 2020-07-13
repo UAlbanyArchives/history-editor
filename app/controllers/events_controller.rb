@@ -62,7 +62,7 @@ class EventsController < ApplicationController
     strip_params
     get_file
     citation_fixes
-
+    
     respond_to do |format|
       if @event.update(event_params)
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
@@ -153,18 +153,23 @@ class EventsController < ApplicationController
         response = http.request(request)
         result = JSON.parse(response.body)
         fileSetID = []
+        iiif_switch = false
         result["@graph"].each do |thing|
           if thing.key?("ore:proxyFor")
             fileSetID << thing["ore:proxyFor"]["@id"].split("archives.albany.edu/catalog/")[1]
           end
+          if thing.key?("dc:type") and thing["dc:type"] == "Image"
+            iiif_switch = true
+          end
         end
         fileURL = "https://archives.albany.edu/downloads/" + fileSetID[0]
         params[:event][:file] = fileURL
+        params[:event][:iiif] = iiif_switch
       end
     end
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:title, :description, :date, :display_date, :citation_description, :representative_media, :file, :internal_note, :formatted_correctly, :content_confirmed, :subject_ids => [], citations_attributes: [:id, :link, :text, :page, :file, :_destroy])
+      params.require(:event).permit(:title, :description, :date, :display_date, :citation_description, :representative_media, :file, :iiif, :internal_note, :formatted_correctly, :content_confirmed, :subject_ids => [], citations_attributes: [:id, :link, :text, :page, :file, :_destroy])
     end
 end
