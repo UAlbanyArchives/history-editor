@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   scope 'history-editor' do
+      root 'events#index'
       devise_for :users
       resources :citations
       resources :subjects
