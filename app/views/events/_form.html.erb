@@ -37,7 +37,7 @@
       </div>
 
       <div class="field">
-        <%= form.select(:subject_ids, Subject.all.collect {|s| [s.name, s.id]}, {}, {multiple: true, size: 10}) %>
+        <%= form.select(:subject_ids, Subject.all.order(:name).collect {|s| [s.name, s.id]}, {}, {multiple: true, size: 10}) %>
       </div>
 
       <div class="field mt-4 mb-4">
