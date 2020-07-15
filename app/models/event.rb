@@ -6,6 +6,8 @@ class Event < ApplicationRecord
 	accepts_nested_attributes_for :citations, allow_destroy: true
 	validates_associated :citations
 
+	has_paper_trail
+
 	after_commit :index_data_in_solr, on: [:create, :update]
 	before_destroy :remove_data_from_solr
 
