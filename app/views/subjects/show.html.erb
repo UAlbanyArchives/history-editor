@@ -18,7 +18,7 @@
 <div class="list-group mt-3">
   <h4>Events:</h4>
 	<% Event.includes(:subjects).where(subjects: {id: @subject.id }).order(:date).each do |event| %>
-		<a href="/events/<%= event.id %>" class="list-group-item list-group-item-action flex-column align-items-start">
+		<a href="events_path/<%= event.id %>" class="list-group-item list-group-item-action flex-column align-items-start">
 		    <div class="d-flex w-100 justify-content-between">
 		      <h5 class="mb-1"><%= event.title %></h5>
 		      <small><%= event.date %></small>
