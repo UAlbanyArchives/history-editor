@@ -137,8 +137,10 @@ class EventsController < ApplicationController
       
       if params[:event][:representative_media]
         url = URI.parse(params[:event][:representative_media] + "?format=jsonld")
-      elsif @event.citations.present?
-        url = URI.parse(@event.citations[0].link + "?format=jsonld")
+      elsif @event.present?
+        if @event.citations.present?
+            url = URI.parse(@event.citations[0].link + "?format=jsonld")
+        end        
       elsif params[:event][:citations_attributes]
         cite_param = params[:event][:citations_attributes]
         cite_key = cite_param.as_json.first.first
