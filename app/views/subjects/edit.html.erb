@@ -6,7 +6,8 @@
 
 <div class="btn-group">
 	<%= link_to 'Show', @subject, class: "btn btn-primary" %>
-	<%= link_to 'Back', subjects_path, class: "btn btn-outline-dark" %>
+	<%= link_to 'List', subjects_path, class: "btn btn-outline-dark" %>
+	<%= link_to 'Destroy', @subject, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
 </div>
 
 </div>

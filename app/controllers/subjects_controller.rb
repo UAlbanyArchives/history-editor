@@ -61,6 +61,8 @@ class SubjectsController < ApplicationController
   # DELETE /subjects/1
   # DELETE /subjects/1.json
   def destroy
+    media_to_yml
+
     @subject.destroy
     respond_to do |format|
       format.html { redirect_to subjects_url, notice: 'Subject was successfully destroyed.' }
@@ -100,13 +102,15 @@ class SubjectsController < ApplicationController
         end
         fileURL = "https://archives.albany.edu/downloads/" + fileSetID[0]
         params[:subject][:file] = fileURL
-        end
+      else
+        @subject.file = nil
+      end
     end
 
     def media_to_yml
-      if params[:subject][:file].present?
-        require 'yaml'
-        yml_path = "#{Rails.root}/../history/config/subjects.yml"
+      require 'yaml'
+      yml_path = "#{Rails.root}/../history/config/subjects.yml"
+      if params[:subject].present? and params[:subject][:file].present?
         if File.exists? (yml_path)
           media_yml = YAML.load_file(yml_path)
           media_yml[params[:subject][:name]] = params[:subject][:file]
@@ -115,6 +119,16 @@ class SubjectsController < ApplicationController
           media_yml[params[:subject][:name]] = params[:subject][:file]
         end
         File.open(yml_path, 'w') { |f| YAML.dump(media_yml, f) }
+      else
+        if File.exists? (yml_path)
+          media_yml = YAML.load_file(yml_path)
+          if params[:subject].present?
+            media_yml.delete(params[:subject][:name])
+          else
+            media_yml.delete(@subject.name)
+          end
+          File.open(yml_path, 'w') { |f| YAML.dump(media_yml, f) }
+        end
       end
     end
 
