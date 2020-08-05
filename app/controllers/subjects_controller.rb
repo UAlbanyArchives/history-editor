@@ -83,7 +83,7 @@ class SubjectsController < ApplicationController
     def get_file
       require 'net/http'
       require 'json'
-
+      
       if params[:subject][:representative_media]
         url = URI.parse(params[:subject][:representative_media] + "?format=jsonld")
         http = Net::HTTP.new(url.host, url.port)
@@ -102,7 +102,7 @@ class SubjectsController < ApplicationController
         end
         fileURL = "https://archives.albany.edu/downloads/" + fileSetID[0]
         params[:subject][:file] = fileURL
-      else
+      elsif @subject.present?
         @subject.file = nil
       end
     end
