@@ -6,7 +6,11 @@
 
       <div class="card">
         <% if @event.iiif %>
-            <div class="uv" data-locale="en-GB:English (GB),cy-GB:Cymraeg" data-config="" data-uri="<%= @event.representative_media %>/manifest" data-collectionindex="0" data-manifestindex="0" data-sequenceindex="0" data-canvasindex="0" data-rotation="0" style="width:100%; height: 500px; background-color: #000"></div><script type="text/javascript" id="embedUV" src="https://archives.albany.edu/universalviewer/dist/uv-2.0.1/lib/embed.js"></script><script type="text/javascript">/* wordpress fix */</script>
+            <% if @event.representative_media %>
+              <div class="uv" data-locale="en-GB:English (GB),cy-GB:Cymraeg" data-config="" data-uri="<%= @event.representative_media %>/manifest" data-collectionindex="0" data-manifestindex="0" data-sequenceindex="0" data-canvasindex="0" data-rotation="0" style="width:100%; height: 500px; background-color: #000"></div><script type="text/javascript" id="embedUV" src="https://archives.albany.edu/universalviewer/dist/uv-2.0.1/lib/embed.js"></script><script type="text/javascript">/* wordpress fix */</script>
+            <% else %>
+            <div class="uv" data-locale="en-GB:English (GB),cy-GB:Cymraeg" data-config="" data-uri="<%= @event.citations[0].link %>/manifest" data-collectionindex="0" data-manifestindex="0" data-sequenceindex="0" data-canvasindex="0" data-rotation="0" style="width:100%; height: 500px; background-color: #000"></div><script type="text/javascript" id="embedUV" src="https://archives.albany.edu/universalviewer/dist/uv-2.0.1/lib/embed.js"></script><script type="text/javascript">/* wordpress fix */</script>
+            <% end %>
         <% elsif @event.file.present? %>
             <iframe id="pdfViewer" src=<%= @event.file %> class="embededPDF"></iframe>
         <% end %>
