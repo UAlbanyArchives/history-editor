@@ -137,14 +137,14 @@ class EventsController < ApplicationController
       
       if params[:event][:representative_media]
         url = URI.parse(params[:event][:representative_media] + "?format=jsonld")
-      elsif @event.present?
-        if @event.citations.present?
-            url = URI.parse(@event.citations[0].link + "?format=jsonld")
-        end        
       elsif params[:event][:citations_attributes]
         cite_param = params[:event][:citations_attributes]
         cite_key = cite_param.as_json.first.first
         url = URI.parse(cite_param[cite_key][:link].split('?')[0] + "?format=jsonld")
+      elsif @event.present?
+        if @event.citations.present?
+            url = URI.parse(@event.citations[0].link + "?format=jsonld")
+        end
       end
       if url
         http = Net::HTTP.new(url.host, url.port)
@@ -168,6 +168,11 @@ class EventsController < ApplicationController
         fileURL = "https://archives.albany.edu/downloads/" + fileSetID[0]
         params[:event][:file] = fileURL
         params[:event][:iiif] = iiif_switch
+      else
+        unless @event.citations.present? or @event.representative_media.present?
+          params[:event][:file] = nil
+          params[:event][:iiif] = nil
+        end
       end
     end
 
