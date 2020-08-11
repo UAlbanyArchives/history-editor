@@ -169,9 +169,11 @@ class EventsController < ApplicationController
         params[:event][:file] = fileURL
         params[:event][:iiif] = iiif_switch
       else
-        unless @event.citations.present? or @event.representative_media.present?
-          params[:event][:file] = nil
-          params[:event][:iiif] = nil
+        if @event.present?
+          unless @event.citations.present? or @event.representative_media.present?
+            params[:event][:file] = nil
+            params[:event][:iiif] = nil
+          end
         end
       end
     end
