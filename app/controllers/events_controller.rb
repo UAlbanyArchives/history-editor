@@ -22,7 +22,13 @@ class EventsController < ApplicationController
   # GET /events.json
   def index
     if params[:editor]
-      @edited_by = Event.all.each { |event| event.versions[0].whodunnit == params[:editor] }
+      #@edited_by = Event.all.each { |event| event.versions[0].whodunnit == params[:editor] }
+      @edited_by = []
+      Event.all.each do |event|
+        if event.versions[0].whodunnit == params[:editor]
+          @edited_by << event
+        end
+      end
       @events = Event.where(id: @edited_by.map(&:id))
     else
       @events = Event.all
