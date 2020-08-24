@@ -96,6 +96,13 @@
                 <%= render 'layouts/boolean_check', check: @event.content_confirmed %>
                 <strong>Content confirmed</strong>
               </li>
+              <% if @event.versions.last.whodunnit.present? %>
+                <li class="list-group-item">
+                    <strong>Last Updated:</strong>
+                    <% editor_id = @event.versions.last.whodunnit %>
+                    <%= User.find(editor_id).email %>
+                </li>
+              <% end %>
             </ul>
 
           </div>
