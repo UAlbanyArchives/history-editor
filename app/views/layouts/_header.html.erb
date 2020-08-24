@@ -26,7 +26,19 @@
           Add Subject
         </a>
       </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+          Events Edited by
+        </a>
+        <div class="dropdown-menu">
+          <% User.all.each do |user| %>
+            <a class="dropdown-item" href="https://archives.albany.edu/history-editor/events?editor=<%= user.id %>"><%= user.email %></a>
+          <% end %>
+        </div>
+      </li>
     </ul>
+    
+
     <div class="navbar-text float-right">
       <% if user_signed_in? %>
         <span>Logged in as <strong><%= current_user.email %></strong>.</span>
