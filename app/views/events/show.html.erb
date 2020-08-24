@@ -82,11 +82,6 @@
           <div class="card-body">
             
             
-            <% if @event.internal_note.present? %>
-              <h4 class="card-title">Internal note</h4>
-              <p class="card-text"><%= @event.internal_note %></p>
-            <% end %>
-
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
                 <%= render 'layouts/boolean_check', check: @event.formatted_correctly %>
@@ -104,6 +99,11 @@
                 </li>
               <% end %>
             </ul>
+
+            <% if @event.internal_note.present? %>
+              <h4 class="card-title">Internal note</h4>
+              <p class="card-text"><%= @event.internal_note %></p>
+            <% end %>
 
           </div>
         </div>
