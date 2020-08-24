@@ -25,7 +25,7 @@ class EventsController < ApplicationController
       #@edited_by = Event.all.each { |event| event.versions[0].whodunnit == params[:editor] }
       @edited_by = []
       Event.all.each do |event|
-        if event.versions[0].whodunnit == params[:editor]
+        if event.versions.last.whodunnit == params[:editor]
           @edited_by << event
         end
       end
