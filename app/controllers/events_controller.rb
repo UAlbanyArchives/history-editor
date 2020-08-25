@@ -31,7 +31,7 @@ class EventsController < ApplicationController
       end
       @events = Event.where(id: @edited_by.map(&:id))
     elsif params[:unedited]
-      @events = Event.where(formatted_correctly: nil).or(Event.where(formatted_correctly: false)).count
+      @events = Event.where(formatted_correctly: nil).or(Event.where(formatted_correctly: false))
     else
       @events = Event.all
     end
