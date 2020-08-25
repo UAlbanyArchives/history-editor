@@ -26,13 +26,18 @@
           Add Subject
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<%= events_path %>?unedited" role="button" aria-haspopup="true" aria-expanded="false">
+          Needs Formatting
+        </a>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
           Events Edited by
         </a>
         <div class="dropdown-menu">
           <% User.all.each do |user| %>
-            <a class="dropdown-item" href="https://archives.albany.edu/history-editor/events?editor=<%= user.id %>"><%= user.email %></a>
+            <a class="dropdown-item" href="<%= events_path %>?editor=<%= user.id %>"><%= user.email %></a>
           <% end %>
         </div>
       </li>
