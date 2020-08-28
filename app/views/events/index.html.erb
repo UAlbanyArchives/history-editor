@@ -43,7 +43,9 @@
           <div class="btn-group">
             <%= link_to 'Show', event, class: "btn btn-primary" %>
             <%= link_to 'Edit', edit_event_path(event), class: "btn btn-info" %>
-          </div>
+          </div><br/>
+          <% zone = ActiveSupport::TimeZone.new("Eastern Time (US & Canada)") %>
+          <b>Last Modified:</b> <%= event.updated_at.in_time_zone(zone) %>
         </td>
     <% end %>
   </tbody>
