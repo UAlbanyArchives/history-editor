@@ -20,8 +20,7 @@ class Event < ApplicationRecord
     
 
     def titlecase_title
-      title_confirmation.try(:titlecase!)
-      title.try(:titlecase!)
+      :title.try(:titlecase!)
     end
 	
 	def media_has_correct_format
