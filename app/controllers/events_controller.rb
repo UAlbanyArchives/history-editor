@@ -29,7 +29,7 @@ class EventsController < ApplicationController
           @edited_by << event
         end
       end
-      @events = Event.where(id: @edited_by.map(&:id))
+      @events = Event.where(id: @edited_by.map(&:id)).order("updated_at DESC")
     elsif params[:unedited]
       @events = Event.where(formatted_correctly: nil).or(Event.where(formatted_correctly: false))
     else

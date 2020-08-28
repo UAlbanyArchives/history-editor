@@ -5,6 +5,8 @@ class Event < ApplicationRecord
 	has_many :citations , dependent: :destroy
 	accepts_nested_attributes_for :citations, allow_destroy: true
 	validates_associated :citations
+    
+    before_validation :titlecase_title
 
 	has_paper_trail
 
@@ -15,7 +17,12 @@ class Event < ApplicationRecord
 	validates :title, uniqueness: { case_sensitive: false }
 
 	validate :media_has_correct_format, if: -> { representative_media.present? }
+    
 
+    def titlecase_title
+      title_confirmation.try(:titlecase!)
+      title.try(:titlecase!)
+    end
 	
 	def media_has_correct_format
   		errors.add(:representative_media, "Invalid representative media link.") unless representative_media.downcase.start_with?('https://archives.albany.edu/concern/')
