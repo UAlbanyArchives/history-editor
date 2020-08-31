@@ -33,7 +33,7 @@ class EventsController < ApplicationController
     elsif params[:unedited]
       @events = Event.where(formatted_correctly: nil).or(Event.where(formatted_correctly: false))
     elsif params[:unpublished]
-      @events = Event.where(published: false))
+      @events = Event.where(published: false)
     else
       @events = Event.all
     end
