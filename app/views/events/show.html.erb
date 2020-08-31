@@ -84,6 +84,10 @@
             
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
+                <%= render 'layouts/boolean_check', check: @event.published %>
+                <strong>Published</strong>
+              </li>
+              <li class="list-group-item">
                 <%= render 'layouts/boolean_check', check: @event.formatted_correctly %>
                 <strong>Formatted correctly</strong>
               </li>

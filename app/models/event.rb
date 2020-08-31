@@ -20,7 +20,9 @@ class Event < ApplicationRecord
     
 
     def titlecase_title
-      self.title = self.title.titleize
+	  if self.title.present?
+      	self.title = self.title.titleize
+	  end
     end
 	
 	def media_has_correct_format
@@ -58,8 +60,13 @@ class Event < ApplicationRecord
 	  end
 
 	  def index_data_in_solr
-	    SolrService.add(to_solr)
-	    SolrService.commit
+		if self.published
+	    	SolrService.add(to_solr)
+			SolrService.commit
+		else
+			SolrService.delete_by_id(id)
+	    	SolrService.commit
+		end
 	  end
 
 	  def remove_data_from_solr
