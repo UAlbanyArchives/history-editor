@@ -22,14 +22,7 @@ class EventsController < ApplicationController
   # GET /events.json
   def index
     if params[:editor]
-      #@edited_by = Event.all.each { |event| event.versions[0].whodunnit == params[:editor] }
-      @edited_by = []
-      Event.all.each do |event|
-        if event.versions.last.whodunnit == params[:editor]
-          @edited_by << event
-        end
-      end
-      @events = Event.where(id: @edited_by.map(&:id)).order("updated_at DESC")
+      @events = Event.where(updated_by: params[:editor].to_i).order("updated_at DESC")
     elsif params[:unedited]
       @events = Event.where(formatted_correctly: nil).or(Event.where(formatted_correctly: false))
     elsif params[:unpublished]
@@ -78,6 +71,8 @@ class EventsController < ApplicationController
     strip_params
     get_file
     citation_fixes
+    
+    @event.updated_by = current_user.id
     
     respond_to do |format|
       if @event.update(event_params)
