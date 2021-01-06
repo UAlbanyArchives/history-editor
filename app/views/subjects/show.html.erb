@@ -21,11 +21,13 @@
 	<% Event.includes(:subjects).where(subjects: {id: @subject.id }).order(:date).each do |event| %>
 		<a href="<%= events_path %>/<%= event.id %>" class="list-group-item list-group-item-action flex-column align-items-start">
 		    <div class="d-flex w-100 justify-content-between">
-		      <h5 class="mb-1"><%= event.title %></h5>
-		      <small><%= event.date %></small>
+		      <h5 class="mb-1">
+			<%= event.title %>
+		      	<small><%= event.date %></small>
+		      </h5>
+		      <div>Confirmed: <%= render 'layouts/boolean_check', check: event.content_confirmed %></div>
 		    </div>
 		    <p class="mb-1"><%= event.description %></p>
-		    <p class="mb-1"><%= render 'layouts/boolean_check', check: event.content_confirmed %></p>
 		  </a>
 	<% end %>
 </div>
