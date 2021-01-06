@@ -20,6 +20,7 @@
       <th>Description</th>
       <th>Subjects</th>
       <th>Citations</th>
+      <th>Confirmed</th>
       <th></th>
     </tr>
   </thead>
@@ -39,6 +40,7 @@
         <td><%= event.description %></td>
         <td><%= render 'layouts/boolean_check', check: event.subjects.present? %></td>
         <td><%= render 'layouts/boolean_check', check: event.citations.present? %></td>
+        <td><%= render 'layouts/boolean_check', check: event.content_confirmed %></td>
         <td>
           <div class="btn-group">
             <%= link_to 'Show', event, class: "btn btn-primary" %>

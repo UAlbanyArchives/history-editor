@@ -23,8 +23,8 @@ class EventsController < ApplicationController
   def index
     if params[:editor]
       @events = Event.where(updated_by: params[:editor].to_i).order("updated_at DESC")
-    elsif params[:unedited]
-      @events = Event.where(formatted_correctly: nil).or(Event.where(formatted_correctly: false))
+    elsif params[:unconfirmed]
+      @events = Event.where(content_confirmed: false)
     elsif params[:unpublished]
       @events = Event.where(published: false)
     else
