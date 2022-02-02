@@ -6,7 +6,7 @@ class Event < ApplicationRecord
 	accepts_nested_attributes_for :citations, allow_destroy: true
 	validates_associated :citations
     
-    before_validation :titlecase_title
+   	#before_validation :titlecase_title
 
 	has_paper_trail
 
