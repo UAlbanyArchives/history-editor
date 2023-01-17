@@ -8,11 +8,11 @@
         <% if @event.iiif %>
             <% if @event.representative_media %>
 		<div class="uv">
-			<iframe style="width:100%; height:20rem;" aria-label="image view" src="<%= @event.representative_media %>/manifest&config=https://archives.albany.edu/uv/uv-config.json" allowfullscreen="true" frameborder="0"></iframe>
+			<iframe style="width:100%; height:20rem;" aria-label="image view" src="<%= @event.representative_media %>/manifest?config=https://archives.albany.edu/uv/uv-config.json" allowfullscreen="true" frameborder="0"></iframe>
 		</div>
             <% else %>
 		<div class="uv">
-			<iframe style="width:100%; height:20rem;" aria-label="image view" src="<%= @event.citations[0].link %>/manifest&config=https://archives.albany.edu/uv/uv-config.json" allowfullscreen="true" frameborder="0"></iframe>
+			<iframe style="width:100%; height:20rem;" aria-label="image view" src="<%= @event.citations[0].link %>/manifest?config=https://archives.albany.edu/uv/uv-config.json" allowfullscreen="true" frameborder="0"></iframe>
 		</div>
             <% end %>
         <% elsif @event.file.present? %>
