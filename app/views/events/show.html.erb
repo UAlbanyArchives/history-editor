@@ -8,11 +8,11 @@
         <% if @event.iiif %>
             <% if @event.representative_media %>
 		<div class="uv">
-			<iframe style="width:100%; height:20rem;" aria-label="image view" src="<%= @event.representative_media %>/manifest?config=https://archives.albany.edu/uv/uv-config.json" allowfullscreen="true" frameborder="0"></iframe>
+			<iframe style="width:100%; height:20rem;" aria-label="image view" src="https://archives.albany.edu/uv/uv.html#?manifest=<%= @event.representative_media %>/manifest&config=https://archives.albany.edu/uv/uv-config.json" allowfullscreen="true" frameborder="0"></iframe>
 		</div>
             <% else %>
 		<div class="uv">
-			<iframe style="width:100%; height:20rem;" aria-label="image view" src="<%= @event.citations[0].link %>/manifest?config=https://archives.albany.edu/uv/uv-config.json" allowfullscreen="true" frameborder="0"></iframe>
+			<iframe style="width:100%; height:20rem;" aria-label="image view" src="https://archives.albany.edu/uv/uv.html#?manifest=<%= @event.citations[0].link %>/manifest&config=https://archives.albany.edu/uv/uv-config.json" allowfullscreen="true" frameborder="0"></iframe>
 		</div>
             <% end %>
         <% elsif @event.file.present? %>
@@ -135,5 +135,3 @@
   </div>
 
 </div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/universalviewer@4.0.0/dist/uv.css" />
-<script type="application/javascript" src="https://cdn.jsdelivr.net/npm/universalviewer@4.0.0/dist/umd/UV.js"></script>
