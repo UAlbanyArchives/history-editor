@@ -1,0 +1,4 @@
+# Cron job that gets installed in the Dockerfile to clear the db each month
+
+# Clean Rails tmp folder every day at midnight
+0 0 * * * rm -rf /app/tmp/* >> /app/log/cron.log 2>&1
