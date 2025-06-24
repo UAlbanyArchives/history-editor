@@ -10,6 +10,7 @@ services:
       - .:/app
       - ./db/development.sqlite3:/app/db/development.sqlite3
       - ./db/production.sqlite3:/app/db/production.sqlite3
+      - ../history/config/subjects.yml:/subjects.yml
     working_dir: /app
     command: >
       bash -c "apt update &&

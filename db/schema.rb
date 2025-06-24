@@ -79,5 +79,4 @@ ActiveRecord::Schema.define(version: 2023_03_29_141445) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  add_foreign_key "citations", "events"
 end

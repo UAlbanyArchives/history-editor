@@ -26,7 +26,7 @@ class Event < ApplicationRecord
     end
 	
 	def media_has_correct_format
-  		errors.add(:representative_media, "Invalid representative media link.") unless representative_media.downcase.start_with?('https://archives.albany.edu/concern/')
+  		errors.add(:representative_media, "Invalid representative media link.") unless representative_media.downcase.start_with?('https://archives.albany.edu/description/catalog')
 	end
 
 	def to_solr
@@ -40,9 +40,11 @@ class Event < ApplicationRecord
 		solr_citation_files = []
 		self.citations.each do |cite|
 			solr_citation_links << cite.link
+			puts solr_citation_links
 			solr_citation_text << cite.text
 			solr_citation_pages << cite.page
 			solr_citation_files << cite.file
+			puts solr_citation_files
 		end
 		if display_date.present?
 	    	{

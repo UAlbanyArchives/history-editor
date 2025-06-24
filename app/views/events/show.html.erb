@@ -5,18 +5,17 @@
     <div class="col-xs-12 col-md-8">
 
       <div class="card">
-        <% if @event.iiif %>
-            <% if @event.representative_media %>
-		<div class="uv">
-			<iframe style="width:100%; height:20rem;" aria-label="image view" src="https://archives.albany.edu/uv/uv.html#?manifest=<%= @event.representative_media %>/manifest&config=https://archives.albany.edu/uv/uv-config.json" allowfullscreen="true" frameborder="0"></iframe>
-		</div>
-            <% else %>
-		<div class="uv">
-			<iframe style="width:100%; height:20rem;" aria-label="image view" src="https://archives.albany.edu/uv/uv.html#?manifest=<%= @event.citations[0].link %>/manifest&config=https://archives.albany.edu/uv/uv-config.json" allowfullscreen="true" frameborder="0"></iframe>
-		</div>
-            <% end %>
+        <% if @event.representative_media %>
+          <% manifest = transform_manifest(@event.representative_media) %>
+        <% else %>
+          <% manifest = transform_manifest(@event.citations[0].link) %>
+        <% end %>
+        <% if manifest %>
+      		<div class="uv">
+      			<iframe style="width:100%; height:20rem;" aria-label="image view" src="https://archives.albany.edu/uv/uv.html#?manifest=<%= manifest %>&config=https://archives.albany.edu/uv/uv-config.json" allowfullscreen="true" frameborder="0"></iframe>
+      		</div>
         <% elsif @event.file.present? %>
-            <iframe id="pdfViewer" src=<%= @event.file %> class="embededPDF"></iframe>
+            <img id="pdfViewer" src=<%= @event.file %> class="embededPDF"></img>
         <% end %>
         
         <div class="card-body">

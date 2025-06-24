@@ -1,5 +1,6 @@
 class CitationsController < ApplicationController
   before_action :set_citation, only: [:show, :edit, :update, :destroy]
+  include ApplicationHelper
 
   # GET /citations
   # GET /citations.json
@@ -74,27 +75,10 @@ class CitationsController < ApplicationController
     end
 
     def get_file
-      require 'net/http'
-      require 'json'
       
       if params[:citation][:link]
-        url = URI.parse(params[:citation][:link] + "?format=jsonld")
-        http = Net::HTTP.new(url.host, url.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-        request = Net::HTTP::Get.new(url.request_uri)
-
-        response = http.request(request)
-        result = JSON.parse(response.body)
-        fileSetID = []
-        result["@graph"].each do |thing|
-          if thing.key?("ore:proxyFor")
-            fileSetID << thing["ore:proxyFor"]["@id"].split("archives.albany.edu/catalog/")[1]
-          end
-        end
-        fileURL = "https://archives.albany.edu/downloads/" + fileSetID[0]
-        params[:citation][:file] = fileURL
+        file = transform_thumbnail(params[:citation][:link])
+        params[:citation][:file] = file
       end
     end
 

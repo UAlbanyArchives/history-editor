@@ -1,5 +1,6 @@
 class SubjectsController < ApplicationController
   before_action :set_subject, only: [:show, :edit, :update, :destroy]
+  include ApplicationHelper
 
   # GET /subjects
   # GET /subjects.json
@@ -80,28 +81,10 @@ class SubjectsController < ApplicationController
       params[:subject][:representative_media] = params[:subject][:representative_media].split('?')[0]
     end
 
-    def get_file
-      require 'net/http'
-      require 'json'
-      
+    def get_file    
       if params[:subject][:representative_media]
-        url = URI.parse(params[:subject][:representative_media] + "?format=jsonld")
-        http = Net::HTTP.new(url.host, url.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-        request = Net::HTTP::Get.new(url.request_uri)
-
-        response = http.request(request)
-        result = JSON.parse(response.body)
-        fileSetID = []
-        result["@graph"].each do |thing|
-          if thing.key?("ore:proxyFor")
-            fileSetID << thing["ore:proxyFor"]["@id"].split("archives.albany.edu/catalog/")[1]
-          end
-        end
-        fileURL = "https://archives.albany.edu/downloads/" + fileSetID[0]
-        params[:subject][:file] = fileURL
+        file = transform_thumbnail(params[:subject][:representative_media])
+        params[:subject][:file] = file
       elsif @subject.present?
         @subject.file = nil
       end
@@ -109,25 +92,27 @@ class SubjectsController < ApplicationController
 
     def media_to_yml
       require 'yaml'
-      yml_path = "#{Rails.root}/../history/config/subjects.yml"
-      if params[:subject].present? and params[:subject][:file].present?
-        if File.exists? (yml_path)
-          media_yml = YAML.load_file(yml_path)
-          media_yml[params[:subject][:name]] = params[:subject][:file]
-        else
-          media_yml = {}
-          media_yml[params[:subject][:name]] = params[:subject][:file]
-        end
-        File.open(yml_path, 'w') { |f| YAML.dump(media_yml, f) }
-      else
-        if File.exists? (yml_path)
-          media_yml = YAML.load_file(yml_path)
-          if params[:subject].present?
-            media_yml.delete(params[:subject][:name])
+      yml_path = "/subjects.yml"
+      if File.exist?(yml_path) && File.file?(yml_path)
+        if params[:subject].present? and params[:subject][:file].present?
+          if File.exists? (yml_path)
+            media_yml = YAML.load_file(yml_path)
+            media_yml[params[:subject][:name]] = params[:subject][:file]
           else
-            media_yml.delete(@subject.name)
+            media_yml = {}
+            media_yml[params[:subject][:name]] = params[:subject][:file]
           end
           File.open(yml_path, 'w') { |f| YAML.dump(media_yml, f) }
+        else
+          if File.exists? (yml_path)
+            media_yml = YAML.load_file(yml_path)
+            if params[:subject].present?
+              media_yml.delete(params[:subject][:name])
+            else
+              media_yml.delete(@subject.name)
+            end
+            File.open(yml_path, 'w') { |f| YAML.dump(media_yml, f) }
+          end
         end
       end
     end

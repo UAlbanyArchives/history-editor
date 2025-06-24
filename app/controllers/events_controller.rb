@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :set_paper_trail_whodunnit
+  include ApplicationHelper
 
   def clean_clickref
 
@@ -51,7 +52,6 @@ class EventsController < ApplicationController
   def create
     strip_params
     get_file
-    citation_fixes
     @event = Event.new(event_params)
 
     respond_to do |format|
@@ -70,7 +70,6 @@ class EventsController < ApplicationController
   def update
     strip_params
     get_file
-    citation_fixes
     
     @event.updated_by = current_user.id
     
@@ -101,90 +100,21 @@ class EventsController < ApplicationController
       @event = Event.find(params[:id])
     end
 
-    def citation_fixes
-      require 'net/http'
-      require 'json'
-
-      if params[:event][:citations_attributes]
-        params[:event][:citations_attributes].each do |cite|
-          cite[1][:link] = cite[1][:link].split('?')[0]
-          url = URI.parse(cite[1][:link] + "?format=jsonld")
-          
-          http = Net::HTTP.new(url.host, url.port)
-          http.use_ssl = true
-          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-          request = Net::HTTP::Get.new(url.request_uri)
-
-          response = http.request(request)
-          result = JSON.parse(response.body)
-          fileSetID = []
-          label = ""
-          result["@graph"].each do |thing|
-            if thing.key?("ore:proxyFor")
-              fileSetID << thing["ore:proxyFor"]["@id"].split("archives.albany.edu/catalog/")[1]
-            end
-            if thing.key?("dc:title") and label == ""
-              label = thing["dc:title"]
-            end
-          end
-          fileURL = "https://archives.albany.edu/downloads/" + fileSetID[0]
-          cite[1][:file] = fileURL
-          unless cite[1][:text].present? or label == ""
-            cite[1][:text] = label
-          end
-        end
-      end
-    end
-
     def strip_params
       params[:event][:representative_media] = params[:event][:representative_media].split('?')[0]
     end
 
     def get_file
-      require 'net/http'
-      require 'json'
       
       if params[:event][:representative_media]
-        url = URI.parse(params[:event][:representative_media] + "?format=jsonld")
-      elsif params[:event][:citations_attributes]
-        cite_param = params[:event][:citations_attributes]
-        cite_key = cite_param.as_json.first.first
-        url = URI.parse(cite_param[cite_key][:link].split('?')[0] + "?format=jsonld")
+        file = transform_thumbnail(params[:event][:representative_media])
       elsif @event.present?
         if @event.citations.present?
-            url = URI.parse(@event.citations[0].link + "?format=jsonld")
+          file = transform_thumbnail(@event.citations[0].link)
         end
       end
-      if url
-        http = Net::HTTP.new(url.host, url.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-        request = Net::HTTP::Get.new(url.request_uri)
-
-        response = http.request(request)
-        result = JSON.parse(response.body)
-        fileSetID = []
-        iiif_switch = false
-        result["@graph"].each do |thing|
-          if thing.key?("ore:proxyFor")
-            fileSetID << thing["ore:proxyFor"]["@id"].split("archives.albany.edu/catalog/")[1]
-          end
-          if thing.key?("dc:type") and thing["dc:type"] == "Image"
-            iiif_switch = true
-          end
-        end
-        fileURL = "https://archives.albany.edu/downloads/" + fileSetID[0]
-        params[:event][:file] = fileURL
-        params[:event][:iiif] = iiif_switch
-      else
-        if @event.present?
-          unless @event.citations.present? or @event.representative_media.present?
-            params[:event][:file] = nil
-            params[:event][:iiif] = nil
-          end
-        end
+      if file
+        params[:event][:file] = file
       end
     end
 

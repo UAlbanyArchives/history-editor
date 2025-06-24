@@ -5,6 +5,6 @@ class Subject < ApplicationRecord
 	validate :media_has_correct_format, if: -> { representative_media.present? }
 
 	def media_has_correct_format
-  		errors.add(:representative_media, "Invalid representative media link.") unless representative_media.downcase.start_with?('https://archives.albany.edu/concern/')
+  		errors.add(:representative_media, "Invalid representative media link.") unless representative_media.downcase.start_with?('https://archives.albany.edu/description/catalog')
 	end
 end
