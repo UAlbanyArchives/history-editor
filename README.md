@@ -57,3 +57,11 @@ docker exec -it history-editor bash
 ## Gotchas
 
 For Subject thumbnails in the History app frontend to be editable here, after edits are made, the config/subjects.yml has to be manually copied to the History app for changes to take effect.
+
+### Migration commands
+
+```
+rails arclight:migrate
+rails arclight:convert
+rails arclight:migrate
+```

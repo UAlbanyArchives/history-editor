@@ -55,10 +55,8 @@ namespace :arclight do
     puts "Converting citations..."
     Citation.find_each do |citation|
       unless citation.valid?
-        unless citation.text.include? "Albany Student Press"
-          puts "#{citation.attributes['event_id']} #{citation.text}"
-        else
-          query_text = citation.text.sub(/,\s*p\.\s*\d+\s*$/i, '')
+        if citation.text.start_with?("Albany Student Press,")
+          query_text = citation.text.gsub(', p.', '')
 
           # Build URL
           base_url = 'https://archives.albany.edu/catalog'
@@ -84,7 +82,7 @@ namespace :arclight do
           if result
             new_link = "https://archives.albany.edu/concern/#{result['type'].downcase}s/#{result['id']}"
             citation.link = new_link
-            #puts new_link
+            puts "converting #{citation.text} --> #{new_link}"
             citation.save(validate: false)
           else
             puts "No results found for '#{query_text}'"
@@ -125,10 +123,17 @@ namespace :arclight do
           citation.link = new_id
           citation.file = transform_url(new_id)
           citation.save!
-        end
-      else
-        citation.save!
+        end        
       end
+      if citation.page.present? and citation.link.start_with?("https://archives.albany.edu/concern/")
+        begin
+          int_value = Integer(citation.page)
+          citation.page = int_value - 1
+        rescue ArgumentError, TypeError
+          puts "Citation #{citation.id} has invalid page #{citation.page}."
+        end
+      end
+      citation.save!
     end
 
     ### Update Events ###
