@@ -5,7 +5,7 @@ class Event < ApplicationRecord
 	has_many :citations , dependent: :destroy
 	accepts_nested_attributes_for :citations, allow_destroy: true
 	validates_associated :citations
-    
+    validate :show_citation_errors
    	#before_validation :titlecase_title
 
 	has_paper_trail
@@ -18,6 +18,15 @@ class Event < ApplicationRecord
 
 	validate :media_has_correct_format, if: -> { representative_media.present? }
     
+	def show_citation_errors
+	    citations.each_with_index do |citation, index|
+	      next if citation.valid?
+
+	      citation.errors.full_messages.each do |msg|
+	        errors.add(:citations, "Citation ##{index + 1} (ID: #{citation.id}): #{msg}")
+	      end
+	    end
+	  end
 
     def titlecase_title
 	  if self.title.present?
@@ -40,11 +49,9 @@ class Event < ApplicationRecord
 		solr_citation_files = []
 		self.citations.each do |cite|
 			solr_citation_links << cite.link
-			puts solr_citation_links
 			solr_citation_text << cite.text
 			solr_citation_pages << cite.page
 			solr_citation_files << cite.file
-			puts solr_citation_files
 		end
 		if display_date.present?
 	    	{

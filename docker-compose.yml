@@ -12,7 +12,6 @@ services:
       - ./config/master.key:/app/config/master.key
       - development.sqlite3:/app/db/development.sqlite3
       - production.sqlite3:/app/db/production.sqlite3
-      - ../history/config/subjects.yml:/subjects.yml
     environment:
       - RAILS_ENV=production
       # These override config/puma.rb, but are defaults anyway.

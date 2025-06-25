@@ -92,7 +92,7 @@ class SubjectsController < ApplicationController
 
     def media_to_yml
       require 'yaml'
-      yml_path = "/subjects.yml"
+      yml_path = "config/subjects.yml"
       if File.exist?(yml_path) && File.file?(yml_path)
         if params[:subject].present? and params[:subject][:file].present?
           if File.exists? (yml_path)

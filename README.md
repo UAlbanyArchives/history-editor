@@ -1,6 +1,12 @@
 # history-editor
 A basic CRUD app for creating and editing UAlbany events
 
+## About
+
+History-editor is a basic Rails CRUD (create, read, update, display) app for managing "events" in the [UAlbany history timeline](https://archives.albany.edu/history/). This app is backend-only and indexes to a Solr core. The [UAlbany History app](https://github.com/UAlbanyArchives/history) provides frontend discovery and display for this data.
+
+## Running History-editor
+
 ### For development
 
 Run the app:
@@ -47,3 +53,7 @@ If you need another terminal:
 ```
 docker exec -it history-editor bash
 ```
+
+## Gotchas
+
+For Subject thumbnails in the History app frontend to be editable here, after edits are made, the config/subjects.yml has to be manually copied to the History app for changes to take effect.
