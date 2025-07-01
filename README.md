@@ -65,3 +65,15 @@ rails arclight:migrate
 rails arclight:convert
 rails arclight:migrate
 ```
+
+
+## Backup
+
+There is an included backup process which dumps the sqlite to a CSV and adds it to the github repo. This uses the backup service in the compose file.
+
+The [history-database](https://github.com/UAlbanyArchives/history-database) repo needs to be cloned next to the history-editor app.
+
+This cron runs the backup.
+```
+0 2 * * 0 cd /var/www/history-editor && && docker compose run --rm backup
+```

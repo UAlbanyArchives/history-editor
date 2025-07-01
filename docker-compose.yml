@@ -10,8 +10,6 @@ services:
       - ./log:/app/log
       - ./db:/app/db
       - ./config/master.key:/app/config/master.key
-      - development.sqlite3:/app/db/development.sqlite3
-      - production.sqlite3:/app/db/production.sqlite3
     environment:
       - RAILS_ENV=production
       # These override config/puma.rb, but are defaults anyway.
@@ -24,3 +22,17 @@ services:
       retries: 3
       start_period: 10s
       timeout: 10s
+  backup:
+    container_name: history-editor-backup
+    image: history-editor
+    volumes:
+      - ./db:/app/db
+      - ./backup:/app/backup
+      - ../history-database:/app/history-database
+      - ~/.ssh/id_ed25519:/root/.ssh/id_ed25519:ro
+      - ~/.ssh/id_ed25519.pub:/root/.ssh/id_ed25519.pub:ro
+      - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
+    entrypoint: ["/app/backup/backup_sqlite_to_csv.sh"]
+    environment:
+      - RAILS_ENV=production
+    restart: "no"
