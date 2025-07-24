@@ -11,7 +11,7 @@ History-editor is a basic Rails CRUD (create, read, update, display) app for man
 
 Run the app:
 ```
-docker-compose up
+docker compose up
 ```
 
 Navigate to [http://localhost:3000/history-editor](http://localhost:3000/history-editor)

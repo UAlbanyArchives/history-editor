@@ -12,7 +12,7 @@
         <% end %>
         <% if manifest %>
       		<div class="uv">
-      			<iframe style="width:100%; height:20rem;" aria-label="image view" src="https://archives.albany.edu/uv/uv.html#?manifest=<%= manifest %>&config=https://archives.albany.edu/uv/uv-config.json" allowfullscreen="true" frameborder="0"></iframe>
+      			<iframe style="width:100%; height:40vh;;" aria-label="image view" src="https://media.archives.albany.edu?manifest=<%= manifest %>" allowfullscreen="true" frameborder="0"></iframe>
       		</div>
         <% elsif @event.file.present? %>
             <img id="pdfViewer" src=<%= @event.file %> class="embededPDF"></img>
