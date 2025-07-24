@@ -11,36 +11,37 @@ History-editor is a basic Rails CRUD (create, read, update, display) app for man
 
 Run the app:
 ```
-docker-compose -f docker-compose-dev.yml up
+docker-compose up
 ```
 
 Navigate to [http://localhost:3000/history-editor](http://localhost:3000/history-editor)
 
 You should be able to edit code in real time.
 
-When you're done:
-```
-docker-compose down
-```
-
 ### For deployment
 
-Building the `history-editor` image locally:
+Building the `history` image for production:
 ```
-DOCKER_BUILDKIT=1 docker build --secret id=master_key,src=config/master.key -t history-editor .
+make build
 ```
-On Windows:
+
+Restarting the service:
+```
+make restart
+```
+
+#### For Windows
+
+These commands don't work on Windows. For that you have to use the full build command:
 ```
 $env:DOCKER_BUILDKIT=1; docker build --secret id=master_key,src=config/master.key -t history-editor .
 ```
 
-Running the image
+Running the image in the background:
 ```
-docker-compose up -d
+docker compose -f docker-compose-prod.yml up -d
 ```
 Navigate to [http://localhost:8081/history-editor](http://localhost:8081/history-editor)
-
-&#8594; In production, this should be set up to run as a service.
 
 To stop:
 ```
@@ -57,14 +58,6 @@ docker exec -it history-editor bash
 ## Gotchas
 
 For Subject thumbnails in the History app frontend to be editable here, after edits are made, the config/subjects.yml has to be manually copied to the History app for changes to take effect.
-
-### Migration commands
-
-```
-rails arclight:migrate
-rails arclight:convert
-rails arclight:migrate
-```
 
 
 ## Backup

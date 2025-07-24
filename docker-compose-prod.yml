@@ -1,0 +1,36 @@
+services:
+  history-editor:
+    container_name: history-editor
+    image: history-editor
+    ports:
+      - '0.0.0.0:8081:3000'
+    volumes:
+      - ./log:/app/log
+      - ./db:/app/db
+      - ./config/master.key:/app/config/master.key
+    environment:
+      - RAILS_ENV=production
+      # These override config/puma.rb, but are defaults anyway.
+      - WEB_CONCURRENCY=2
+      - RAILS_MAX_THREADS=5
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/history-editor/health"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 10s
+  backup:
+    container_name: history-editor-backup
+    image: history-editor
+    volumes:
+      - ./db:/app/db
+      - ./backup:/app/backup
+      - ../history-database:/app/history-database
+      - ~/.ssh/id_ed25519:/root/.ssh/id_ed25519:ro
+      - ~/.ssh/id_ed25519.pub:/root/.ssh/id_ed25519.pub:ro
+      - ~/.ssh/known_hosts:/root/.ssh/known_hosts:ro
+    entrypoint: ["/app/backup/backup_sqlite_to_csv.sh"]
+    environment:
+      - RAILS_ENV=production
+    restart: "no"
