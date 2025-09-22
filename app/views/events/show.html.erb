@@ -7,7 +7,7 @@
       <div class="card">
         <% if @event.representative_media %>
           <% manifest = transform_manifest(@event.representative_media) %>
-        <% else %>
+        <% elsif @event.citations.present? %>
           <% manifest = transform_manifest(@event.citations[0].link) %>
         <% end %>
         <% if manifest %>
