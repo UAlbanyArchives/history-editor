@@ -21,7 +21,7 @@
       <th>Subjects</th>
       <th>Citations</th>
       <th>Confirmed</th>
-      <th></th>
+      <th>Actions</th>
     </tr>
   </thead>
 
@@ -31,7 +31,7 @@
       <tr>
         <td>
           <% if event.file %>
-            <img src="<%= event.file + "?file=thumbnail" %>" class="img-thumbnail" />
+            <img src="<%= event.file + "?file=thumbnail" %>" class="img-thumbnail" alt="Thumbnail for <%= event.title %>" />
           <% end %>
         </td>
         <td><%= event.date %></td>

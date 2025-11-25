@@ -15,6 +15,79 @@
 @import "rails_bootstrap_forms";
 @import "font-awesome";
 
+/* Global button accessibility fixes */
+.btn-primary {
+  background-color: #003366;
+  border-color: #003366;
+  color: #ffffff;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #0055aa;
+  border-color: #0055aa;
+  color: #ffffff;
+  text-decoration: none;
+}
+.btn-secondary {
+  background-color: #666666;
+  border-color: #666666;
+  color: #ffffff;
+}
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active {
+  background-color: #444444;
+  border-color: #444444;
+  color: #ffffff;
+}
+.btn-info {
+  background-color: #117a8b;
+  border-color: #0c5c63;
+  color: #ffffff;
+}
+.btn-info:hover,
+.btn-info:focus,
+.btn-info:active {
+  background-color: #0c5c63;
+  border-color: #09494d;
+  color: #ffffff;
+}
+.btn-success {
+  background-color: #218838;
+  border-color: #1e7e34;
+  color: #ffffff;
+}
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active {
+  background-color: #1c6c2d;
+  border-color: #155d27;
+  color: #ffffff;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #ffffff;
+}
+
+.navbar-dark .navbar-text {
+	color: #ffffff;
+}
+
+a {
+	color: #0056b3;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus {
+  color: #66CCFF;
+}
+
+.navbar.bg-dark {
+  background-color: #003366 !important;
+}
+
+
 .form-group {
 	margin-top: 0.5rem;
 	margin-bottom: 0rem;

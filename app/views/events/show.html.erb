@@ -20,7 +20,7 @@
         
         <div class="card-body">
           <div class="d-flex w-100 justify-content-between">
-            <h3 class="card-title"><%= @event.title %></h3>
+            <h1 class="h3 card-title"><%= @event.title %></h1>
             <small>
               <% if @event.display_date.present? %>
                 <%= @event.display_date %>
@@ -36,14 +36,14 @@
         
         <% if @event.citation_description.present? %>
             <div class="card-body">
-                <h4>Source Details</h4>
+                <h2 class="h4">Source Details</h2>
                 <p class="card-text"><%= @event.citation_description %></p>
             </div>
         <% end %>
 
         <% if @event.subjects.present? %>
             <div class="card-body">
-              <h4>Subjects</h4>
+              <h2 class="h4">Subjects</h2>
               <ul class="list-group mb-3">
                 <% @event.subjects.each do |subject| %>
                   <a href="<%= subjects_path %>/<%= subject.id %>" class="list-group-item list-group-item-action list-group-item-info"><%= subject.name %></a>
@@ -55,13 +55,13 @@
         <% if @event.citations.present? %>
             <div class="card-body container">
               
-              <h4>Source Materials</h4>
+              <h2 class="h4">Source Materials</h2>
               <div class="row">
                 <% @event.citations.each do |cite| %>
                 <div class="col-4 d-flex pb-3">
                 <div class="card" style="width: 18rem; display:block">
                   <% if cite.file %>
-                    <img height="150px" style="display:block;margin: auto;" src="<%= cite.file %>?file=thumbnail">
+                    <img height="150px" style="display:block;margin: auto;" src="<%= cite.file %>?file=thumbnail" alt="Thumbnail for <%= cite.text %>">
                   <% end %>
                   <div class="card-body">
                     
@@ -80,7 +80,7 @@
     </div>
 
     <div class="col-xs-12 col-md-4">
-
+        <h1 class="h3">Actions</h1>
         <div class="card">
           <div class="card-body">
             
@@ -107,7 +107,7 @@
             </ul>
 
             <% if @event.internal_note.present? %>
-              <h4 class="card-title">Internal note</h4>
+              <h2 class="h4 card-title">Internal note</h2>
               <p class="card-text"><%= @event.internal_note %></p>
             <% end %>
 

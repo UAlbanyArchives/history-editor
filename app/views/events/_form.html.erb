@@ -1,7 +1,7 @@
 <%= bootstrap_form_with(model: event, local: true) do |form| %>
   <% if event.errors.any? %>
     <div id="error_explanation" class="alert alert-danger" role="alert">
-      <h2><%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:</h2>
+      <h1 class="h2"><%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:</h1>
 
       <ul>
       <% event.errors.full_messages.each do |message| %>
@@ -74,7 +74,7 @@
       </div>
 
     <div class="col-4">
-      <h3>Internal Info</h3>
+      <h2 class="h3">Internal Info</h2>
 
       <div class="field">
         <div class="form-check">
