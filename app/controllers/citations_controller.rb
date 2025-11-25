@@ -25,7 +25,6 @@ class CitationsController < ApplicationController
   # POST /citations
   # POST /citations.json
   def create
-    get_file
     @citation = Citation.new(citation_params)
 
     respond_to do |format|
@@ -42,7 +41,6 @@ class CitationsController < ApplicationController
   # PATCH/PUT /citations/1
   # PATCH/PUT /citations/1.json
   def update
-    get_file
     respond_to do |format|
       if @citation.update(citation_params)
         format.html { redirect_to @citation, notice: 'Citation was successfully updated.' }
@@ -72,14 +70,6 @@ class CitationsController < ApplicationController
 
     def strip_params
       params[:citation][:link] = params[:citation][:link].split('?')[0]
-    end
-
-    def get_file
-      
-      if params[:citation][:link]
-        file = transform_thumbnail(params[:citation][:link])
-        params[:citation][:file] = file
-      end
     end
 
     # Only allow a list of trusted parameters through.

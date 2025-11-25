@@ -5,7 +5,8 @@ class Event < ApplicationRecord
 	has_many :citations , dependent: :destroy
 	accepts_nested_attributes_for :citations, allow_destroy: true
 	validates_associated :citations
-    validate :show_citation_errors
+	validate :show_citation_errors
+	before_validation :get_citation_thumbnail
    	#before_validation :titlecase_title
 
 	has_paper_trail
@@ -17,22 +18,28 @@ class Event < ApplicationRecord
 	validates :title, uniqueness: { case_sensitive: false }
 
 	validate :media_has_correct_format, if: -> { representative_media.present? }
-    
+	
 	def show_citation_errors
-	    citations.each_with_index do |citation, index|
-	      next if citation.valid?
+		citations.each_with_index do |citation, index|
+		  next if citation.valid?
 
-	      citation.errors.full_messages.each do |msg|
-	        errors.add(:citations, "Citation ##{index + 1} (ID: #{citation.id}): #{msg}")
-	      end
-	    end
-	  end
+		  citation.errors.full_messages.each do |msg|
+			errors.add(:citations, "Citation ##{index + 1} (ID: #{citation.id}): #{msg}")
+		  end
+		end
+	end
 
-    def titlecase_title
+	def titlecase_title
 	  if self.title.present?
-      	self.title = self.title.titleize
+	  	self.title = self.title.titleize
 	  end
-    end
+	end
+
+	def get_citation_thumbnail
+		citations.each do |citation|
+	  		citation.get_thumbnail
+		end
+	end
 	
 	def media_has_correct_format
   		errors.add(:representative_media, "Invalid representative media link.") unless representative_media.downcase.start_with?('https://archives.albany.edu/description/catalog')
@@ -54,33 +61,33 @@ class Event < ApplicationRecord
 			solr_citation_files << cite.file
 		end
 		if display_date.present?
-	    	{
-	      	"title" => title, "description" => description, "date" => date.strftime("%Y-%m-%d"), "display_date" => display_date,
-	      	"subjects" => solr_subjects, "citation_description" => citation_description, "citation_links" => solr_citation_links, "citation_text" => solr_citation_text, "citation_pages" => solr_citation_pages, "citation_files" => solr_citation_files,
-	     	 "representative_media" => representative_media, "file" => file, "iiif" => iiif, "id" => id
-	    	}
+			{
+		  	"title" => title, "description" => description, "date" => date.strftime("%Y-%m-%d"), "display_date" => display_date,
+		  	"subjects" => solr_subjects, "citation_description" => citation_description, "citation_links" => solr_citation_links, "citation_text" => solr_citation_text, "citation_pages" => solr_citation_pages, "citation_files" => solr_citation_files,
+		 	 "representative_media" => representative_media, "file" => file, "iiif" => iiif, "id" => id
+			}
 		else
 			{
-	      	"title" => title, "description" => description, "date" => date.strftime("%Y-%m-%d"), "display_date" => date.strftime("%Y %B %e"),
-	      	"subjects" => solr_subjects, "citation_description" => citation_description, "citation_links" => solr_citation_links, "citation_text" => solr_citation_text, "citation_pages" => solr_citation_pages, "citation_files" => solr_citation_files,
-	      	"representative_media" => representative_media, "file" => file, "iiif" => iiif,"id" => id
-	    	}
+		  	"title" => title, "description" => description, "date" => date.strftime("%Y-%m-%d"), "display_date" => date.strftime("%Y %B %e"),
+		  	"subjects" => solr_subjects, "citation_description" => citation_description, "citation_links" => solr_citation_links, "citation_text" => solr_citation_text, "citation_pages" => solr_citation_pages, "citation_files" => solr_citation_files,
+		  	"representative_media" => representative_media, "file" => file, "iiif" => iiif,"id" => id
+			}
 		end
 	  end
 
 	  def index_data_in_solr
 		if self.published
-	    	SolrService.add(to_solr)
+			SolrService.add(to_solr)
 			SolrService.commit
 		else
 			SolrService.delete_by_id(id)
-	    	SolrService.commit
+			SolrService.commit
 		end
 	  end
 
 	  def remove_data_from_solr
-	    SolrService.delete_by_id(id)
-	    SolrService.commit
+		SolrService.delete_by_id(id)
+		SolrService.commit
 	  end
 
 end
