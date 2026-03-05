@@ -8,5 +8,5 @@ build:
 
 # Restart dev containers (stop and start)
 restart:
-	docker compose down
+	docker compose -f docker-compose-prod.yml down
 	docker compose -f docker-compose-prod.yml up -d
