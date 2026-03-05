@@ -60,20 +60,24 @@ class Event < ApplicationRecord
 			solr_citation_pages << cite.page
 			solr_citation_files << cite.file
 		end
+		date_range_isim = []
+		if date.present?
+			date_range_isim = [date.year]
+		end
 		if display_date.present?
 			{
 		  	"title" => title, "description" => description, "date" => date.strftime("%Y-%m-%d"), "display_date" => display_date,
 		  	"subjects" => solr_subjects, "citation_description" => citation_description, "citation_links" => solr_citation_links, "citation_text" => solr_citation_text, "citation_pages" => solr_citation_pages, "citation_files" => solr_citation_files,
-		 	 "representative_media" => representative_media, "file" => file, "iiif" => iiif, "id" => id
+		 	 "representative_media" => representative_media, "file" => file, "iiif" => iiif, "date_range_isim" => date_range_isim,"id" => id
 			}
 		else
 			{
 		  	"title" => title, "description" => description, "date" => date.strftime("%Y-%m-%d"), "display_date" => date.strftime("%Y %B %e"),
 		  	"subjects" => solr_subjects, "citation_description" => citation_description, "citation_links" => solr_citation_links, "citation_text" => solr_citation_text, "citation_pages" => solr_citation_pages, "citation_files" => solr_citation_files,
-		  	"representative_media" => representative_media, "file" => file, "iiif" => iiif,"id" => id
+		  	"representative_media" => representative_media, "file" => file, "iiif" => iiif, "date_range_isim" => date_range_isim, "id" => id
 			}
 		end
-	  end
+	end
 
 	  def index_data_in_solr
 		if self.published
