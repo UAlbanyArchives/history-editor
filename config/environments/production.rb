@@ -68,9 +68,15 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = { :host => 'archives.albany.edu' }
 
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  # Send mail through the SMTP service on the Docker host (no auth/TLS, host-local relay).
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.smtp_settings = {
+    address: ENV.fetch('SMTP_ADDRESS', 'host.docker.internal'),
+    port: ENV.fetch('SMTP_PORT', 25).to_i,
+    enable_starttls_auto: false,
+    openssl_verify_mode: 'none'
+  }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
