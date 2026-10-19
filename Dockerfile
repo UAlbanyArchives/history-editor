@@ -5,6 +5,13 @@ MAINTAINER Gregory Wiedeman gwiedeman@albany.edu
 
 ENV RAILS_ENV=production
 
+# Debian 11 is EOL; its repos now live on archive.debian.org
+RUN sed -i -e 's|deb.debian.org/debian-security|archive.debian.org/debian-security|g' \
+           -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' \
+           -e 's|deb.debian.org/debian|archive.debian.org/debian|g' /etc/apt/sources.list && \
+    sed -i '/bullseye-updates/d' /etc/apt/sources.list && \
+    echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99archive
+
 # Install dependencies
 RUN apt-get update -qq && apt-get install -y build-essential apt-utils git cron curl nodejs sqlite3
 # The regular apt install yarn isn't as up to date as we need
@@ -42,6 +49,13 @@ RUN --mount=type=secret,id=master_key \
 
 # Final image
 FROM ruby:2.7.7-slim-bullseye
+
+# Debian 11 is EOL; its repos now live on archive.debian.org
+RUN sed -i -e 's|deb.debian.org/debian-security|archive.debian.org/debian-security|g' \
+           -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' \
+           -e 's|deb.debian.org/debian|archive.debian.org/debian|g' /etc/apt/sources.list && \
+    sed -i '/bullseye-updates/d' /etc/apt/sources.list && \
+    echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99archive
 
 # Install dependencies
 RUN apt-get update -qq && apt-get install -y build-essential apt-utils git cron curl nodejs sqlite3
