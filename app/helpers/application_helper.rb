@@ -1,5 +1,23 @@
 module ApplicationHelper
 
+    # Bootstrap-styled error summary for Devise forms
+    def bootstrap_devise_error_messages!
+        return if resource.errors.empty?
+
+        sentence = I18n.t(
+            'errors.messages.not_saved',
+            count: resource.errors.count,
+            resource: resource.class.model_name.human.downcase
+        )
+
+        tag.div(class: 'alert alert-danger', role: 'alert') do
+            safe_join([
+                tag.h4(sentence, class: 'alert-heading'),
+                tag.ul(safe_join(resource.errors.full_messages.map { |message| tag.li(message) }), class: 'mb-0')
+            ])
+        end
+    end
+
 	# This method creates a link with `data-id` `data-fields` attributes. These attributes are used to create new instances of the nested fields through Javascript.
     def link_to_add_fields(name, f, association)
 

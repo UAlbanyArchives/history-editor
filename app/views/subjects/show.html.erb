@@ -12,7 +12,7 @@
 <div class="btn-group mt-3">
   <%= link_to 'Edit', edit_subject_path(@subject), class: "btn btn-info" %>
   <%= link_to 'List', subjects_path, class: "btn btn-outline-dark" %>
-  <%= link_to 'Destroy', @subject, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+  <%= button_to 'Destroy', @subject, method: :delete, form: { data: { confirm: 'Are you sure?' } }, form_class: "btn-group", class: "btn btn-danger" %>
 </div>
 
 

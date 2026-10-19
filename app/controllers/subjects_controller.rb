@@ -95,7 +95,7 @@ class SubjectsController < ApplicationController
       yml_path = "config/subjects.yml"
       if File.exist?(yml_path) && File.file?(yml_path)
         if params[:subject].present? and params[:subject][:file].present?
-          if File.exists? (yml_path)
+          if File.exist?(yml_path)
             media_yml = YAML.load_file(yml_path)
             media_yml[params[:subject][:name]] = params[:subject][:file]
           else
@@ -104,7 +104,7 @@ class SubjectsController < ApplicationController
           end
           File.open(yml_path, 'w') { |f| YAML.dump(media_yml, f) }
         else
-          if File.exists? (yml_path)
+          if File.exist?(yml_path)
             media_yml = YAML.load_file(yml_path)
             if params[:subject].present?
               media_yml.delete(params[:subject][:name])

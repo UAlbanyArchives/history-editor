@@ -1,25 +1,17 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  title: MyString
-  description: MyText
+  title: First event
+  description: Something happened
   date: 2020-07-06
-  display_date: MyString
-  citation_text: MyString
-  citation_link: MyString
-  citation_page: MyString
-  citation_description: MyText
-  content_link: MyString
-  thumb: MyString
+  display_date: July 1820
+  published: false
+  content_confirmed: false
+  formatted_correctly: true
+  internal_note: An internal note
 
 two:
-  title: MyString
-  description: MyText
-  date: 2020-07-06
-  display_date: MyString
-  citation_text: MyString
-  citation_link: MyString
-  citation_page: MyString
-  citation_description: MyText
-  content_link: MyString
-  thumb: MyString
+  title: Second event
+  description: Something else happened
+  date: 2020-08-01
+  published: true
+  content_confirmed: true
+  formatted_correctly: true

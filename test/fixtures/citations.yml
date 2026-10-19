@@ -1,11 +1,10 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  text: MyString
-  link: MyString
-  file: MyString
+  text: A letter
+  link: https://archives.albany.edu/description/catalog/apap101aspace_0123abcd
+  file: https://media.archives.albany.edu/apap.101/0123abcd/thumbnail.jpg
+  event_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
 
 two:
-  text: MyString
-  link: MyString
-  file: MyString
+  text: A photograph
+  link: https://archives.albany.edu/description/catalog/apap102aspace_4567ef01
+  file: https://media.archives.albany.edu/apap.102/4567ef01/thumbnail.jpg

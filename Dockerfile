@@ -1,41 +1,18 @@
-FROM ruby:2.7.7-slim-bullseye AS builder
-#FROM ruby:3.3.4-slim-bookworm AS builder
-# Should look to update to ruby:3.3.4-slim-bookworm
-MAINTAINER Gregory Wiedeman gwiedeman@albany.edu
+FROM ruby:3.3.4-slim-bookworm AS builder
+LABEL maintainer="Gregory Wiedeman gwiedeman@albany.edu"
 
-ENV RAILS_ENV=production
+ENV RAILS_ENV=production \
+    BUNDLE_WITHOUT="development:test"
 
-# Debian 11 is EOL; its repos now live on archive.debian.org
-RUN sed -i -e 's|deb.debian.org/debian-security|archive.debian.org/debian-security|g' \
-           -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' \
-           -e 's|deb.debian.org/debian|archive.debian.org/debian|g' /etc/apt/sources.list && \
-    sed -i '/bullseye-updates/d' /etc/apt/sources.list && \
-    echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99archive
-
-# Install dependencies
-RUN apt-get update -qq && apt-get install -y build-essential apt-utils git cron curl nodejs sqlite3
-# The regular apt install yarn isn't as up to date as we need
-RUN curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-    apt-get update && \
-    apt-get install -y yarn
-
-# Add crontab file in the cron directory
-COPY ./config/history-editor-cron /etc/cron.d/history-editor-cron
-
-# Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/history-editor-cron
-
-# Ensure cron can run in the container
-CMD ["cron", "-f"]
-
-# specifying the version is needed in older ruby image. Should not be needed in ruby 3+.
-RUN gem install bundler -v 2.4.22
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends build-essential git libyaml-dev pkg-config && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install gems
 WORKDIR /app
-COPY Gemfile* ./
-RUN bundle install
+COPY Gemfile Gemfile.lock ./
+RUN bundle install && \
+    rm -rf /usr/local/bundle/cache /usr/local/bundle/ruby/*/cache
 
 # Copy application code
 COPY . /app
@@ -48,30 +25,24 @@ RUN --mount=type=secret,id=master_key \
     rm /app/config/master.key
 
 # Final image
-FROM ruby:2.7.7-slim-bullseye
+FROM ruby:3.3.4-slim-bookworm
 
-# Debian 11 is EOL; its repos now live on archive.debian.org
-RUN sed -i -e 's|deb.debian.org/debian-security|archive.debian.org/debian-security|g' \
-           -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' \
-           -e 's|deb.debian.org/debian|archive.debian.org/debian|g' /etc/apt/sources.list && \
-    sed -i '/bullseye-updates/d' /etc/apt/sources.list && \
-    echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99archive
+ENV RAILS_ENV=production \
+    BUNDLE_WITHOUT="development:test"
 
-# Install dependencies
-RUN apt-get update -qq && apt-get install -y build-essential apt-utils git cron curl nodejs sqlite3
-# The regular apt install yarn isn't as up to date as we need
-RUN curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-    apt-get update && \
-    apt-get install -y yarn
+# Runtime dependencies only. git and openssh-client are used by the backup job.
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends git openssh-client cron curl sqlite3 && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copy application code from the builder stage and install gems
+# Copy gems and application code from the builder stage
+COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY --from=builder /app /app
 WORKDIR /app
-RUN bundle install
+RUN mkdir -p tmp/pids tmp/cache log storage
 
 # Expose port 3000
-ARG DEFAULT_PORT 3000
+ARG DEFAULT_PORT=3000
 EXPOSE ${DEFAULT_PORT}
 
 # Copy the entrypoint script
@@ -82,4 +53,3 @@ RUN git config --global --add safe.directory /app/history-database
 
 # Start cron and Rails server
 CMD ["sh", "-c", "cron && /usr/bin/entrypoint.sh"]
-

@@ -2,7 +2,7 @@ class SolrService
   @@connection = false
 
   def self.connect
-    @@connection = RSolr.connect(url: Rails.application.config_for(:solr)["url"])
+    @@connection = RSolr.connect(url: Rails.application.config_for(:solr)[:url])
     @@connection
   end
 

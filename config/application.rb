@@ -9,7 +9,10 @@ Bundler.require(*Rails.groups)
 module HistoryEditor
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    config.load_defaults 7.2
+
+    # PaperTrail stores object versions as YAML containing dates and times
+    config.active_record.yaml_column_permitted_classes = [Date, Time, Symbol, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone, BigDecimal]
 
     # Configuration for the application, engines, and railties goes here.
     #

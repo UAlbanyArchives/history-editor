@@ -1,6 +1,6 @@
 services:
   history-editor:
-    image: ruby:2.7.7-slim-bullseye
+    image: ruby:3.3.4-slim-bookworm
     container_name: history-editor-dev
     ports:
       - '3000:3000'
@@ -10,9 +10,8 @@ services:
     working_dir: /app
     command: >
       bash -c "apt update &&
-              apt install -y build-essential apt-utils git nodejs &&
+              apt install -y build-essential git libyaml-dev &&
               cd /app &&
-              gem install bundler -v 2.4.22 &&
               bundle install &&
               bundle exec rails db:migrate &&
               bundle exec rails server -b 0.0.0.0"

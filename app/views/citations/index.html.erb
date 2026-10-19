@@ -22,7 +22,7 @@
         <td><%= citation.file %></td>
         <td><%= link_to 'Show', citation %></td>
         <td><%= link_to 'Edit', edit_citation_path(citation) %></td>
-        <td><%= link_to 'Destroy', citation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= button_to 'Destroy', citation, method: :delete, form: { data: { confirm: 'Are you sure?' } }, class: "btn btn-link p-0" %></td>
       </tr>
     <% end %>
   </tbody>
