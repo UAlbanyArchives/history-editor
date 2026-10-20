@@ -66,7 +66,7 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "history_editor_production"
 
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { :host => 'archives.albany.edu' }
+  config.action_mailer.default_url_options = { :host => 'process.archives.albany.edu' }
 
   # Send mail through the SMTP service on the Docker host (no auth/TLS, host-local relay).
   config.action_mailer.delivery_method = :smtp
